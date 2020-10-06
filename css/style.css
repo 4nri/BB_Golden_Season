@@ -7,9 +7,10 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    background-color: #FF0025;
+    /* background-color: #FF0025; */
+    background: linear-gradient(90deg, #FF0025 50%, #5C258C 50%)
 }
 
 .image {
@@ -17,6 +18,7 @@ html, body {
     height: 540px;
     display: block;
     background-size:cover;
+    background-position-x: center;
     background-repeat:no-repeat;
     background-image: url("/BB_Golden_Season/images/ural_0001.png");
 }
