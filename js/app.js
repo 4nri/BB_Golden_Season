@@ -5,7 +5,7 @@ var images = [];
 function preloadImages() {
     for (i = 0; i < frames; i++) {
         images[i] = new Image();
-        images[i].src = "/images/ural_000" + i + ".png";
+        images[i].src = "/BB_Golden_Season/images/ural_000" + i + ".png";
     }
 }
 
