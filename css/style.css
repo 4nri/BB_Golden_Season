@@ -20,7 +20,7 @@ html, body {
     background-size:cover;
     background-position-x: center;
     background-repeat:no-repeat;
-    background-image: url("/images/ural_0001.png");
+    background-image: url("./images/ural_0001.png");
 }
 
 .log {
