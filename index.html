@@ -16,16 +16,13 @@
     <script>
         let x = 1;
         
-        window.addEventListener('deviceorientation', event => {
+        window.addEventListener('deviceorientation', function (event) {
             event.alpha // rotation along the z axis
-            event.beta // rotation along the x axis
-            event.gamma // rotation along the y axis
             document.getElementById('log').innerHTML = event.alpha;
+            // console.log(event.alpha);
         }, true);
-        
-        // document.getElementById('log').innerHTML = x;
-        // console.log(x);
-        // alert( 'Привет, мир!' );
+
+        console.log(x);
     </script>
 </body>
 </html>
