@@ -19,7 +19,6 @@ function onResize() {
     screenWidth = $(document).width();
 }
 
-
 $(document).ready(preloadImages);
 $(window).on('mousemove', onMouseMove);
 $(window).resize(onResize);
