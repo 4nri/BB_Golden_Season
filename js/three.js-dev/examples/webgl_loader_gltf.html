@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - glTF loader</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="../../../css/style.css">
+	</head>
+
+	<body>
+		<div class="container" id="CanvasFrame">
+		</div>
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
+			import { RoughnessMipmapper } from './jsm/utils/RoughnessMipmapper.js';
+
+			var container, controls;
+			var camera, scene, renderer;
+			let mesh;
+
+			let mouse = { x:0,y:0 };
+            let dX = 0, dY = 0;
+
+			function lerp(ratio, start, end) {
+				return (start * (1 - ratio) + end * ratio).toFixed(20);
+			}
+			
+			let onMouseMove = function( event ) {
+				mouse.x = ( event.pageX / document.documentElement.clientWidth) * 2 - 1;
+				mouse.y = - ( event.pageY / document.documentElement.clientHeight ) * 2 + 1;
+			}
+
+			function init() {
+
+				// container = document.createElement( 'div' );
+				container = document.getElementById( 'CanvasFrame' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.01, 10000 );
+				// camera.position.set( - 1.8, 0.6, 2.7 );
+				camera.position.set( 0, 0, 1000 );
+
+				scene = new THREE.Scene();
+
+				new RGBELoader()
+					.setDataType( THREE.UnsignedByteType )
+					.setPath( 'textures/equirectangular/' )
+					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+
+						var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+
+						// scene.background = envMap;
+						scene.environment = envMap;
+
+						texture.dispose();
+						pmremGenerator.dispose();
+
+						render();
+
+						// model
+
+						// use of RoughnessMipmapper is optional
+						var roughnessMipmapper = new RoughnessMipmapper( renderer );
+
+						var loader = new GLTFLoader().setPath( '../../../models/' );
+						loader.load( 'test.gltf', function ( gltf ) {
+
+							gltf.scene.traverse( function ( child ) {
+
+								if ( child.isMesh ) {
+
+									// TOFIX RoughnessMipmapper seems to be broken with WebGL 2.0
+									// roughnessMipmapper.generateMipmaps( child.material );
+
+								}
+
+							} );
+							gltf.scene.scale.set(0.01,0.01,0.01);
+							mesh = gltf.scene;
+							scene.add( gltf.scene );
+
+							roughnessMipmapper.dispose();
+
+							render();
+
+						} );
+
+					} );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;
+				renderer.toneMappingExposure = 1;
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				container.appendChild( renderer.domElement );
+				var pmremGenerator = new THREE.PMREMGenerator( renderer );
+				pmremGenerator.compileEquirectangularShader();
+				
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render ); // use if there is no animation loop
+				controls.minDistance = 2;
+				controls.maxDistance = 10;
+				controls.target.set( 0, 0, 0 );
+				controls.update();
+				
+				window.addEventListener( 'resize', onWindowResize, false );
+				//
+				window.addEventListener('mousemove', onMouseMove, false);
+				window.addEventListener('touchmove', onMouseMove, false);
+				//
+
+			}
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			let loop = function() {
+				requestAnimationFrame( loop );
+				dX = lerp(0.05, dX, mouse.x);
+				dY = lerp(0.05, dY, mouse.y);
+				mesh.rotation.x = -dY * 1;
+				mesh.rotation.y = dX * 1;
+        		render();
+			}
+
+			//
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+			init();
+			render();
+			setTimeout(function () {loop()}, 100);
+
+		</script>
+
+	</body>
+</html>
