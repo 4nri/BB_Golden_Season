@@ -21,16 +21,16 @@
 
 			var container, controls;
 			var camera, scene, renderer;
-			let mesh;
+			var mesh;
 
-			let mouse = { x:0,y:0 };
-            let dX = 0, dY = 0;
+			var mouse = { x:0,y:0 };
+            var dX = 0, dY = 0;
 
 			function lerp(ratio, start, end) {
 				return (start * (1 - ratio) + end * ratio).toFixed(20);
 			}
 			
-			let onMouseMove = function( event ) {
+			var onMouseMove = function( event ) {
 				mouse.x = ( event.pageX / document.documentElement.clientWidth) * 2 - 1;
 				mouse.y = - ( event.pageY / document.documentElement.clientHeight ) * 2 + 1;
 			}
@@ -50,13 +50,13 @@
 				new RGBELoader()
 					.setDataType( THREE.UnsignedByteType )
 					.setPath( 'textures/equirectangular/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+					// royal_esplanade_1k.hdr
+					.load( 'test_hdr_05.hdr', function ( texture ) {
 
 						var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
 
 						// scene.background = envMap;
 						scene.environment = envMap;
-
 						texture.dispose();
 						pmremGenerator.dispose();
 
@@ -68,7 +68,7 @@
 						var roughnessMipmapper = new RoughnessMipmapper( renderer );
 
 						var loader = new GLTFLoader().setPath( '../../../models/' );
-						loader.load( 'test.gltf', function ( gltf ) {
+						loader.load( 'test_01.gltf', function ( gltf ) {
 
 							gltf.scene.traverse( function ( child ) {
 
@@ -103,17 +103,15 @@
 				pmremGenerator.compileEquirectangularShader();
 				
 				controls = new OrbitControls( camera, renderer.domElement );
-				controls.addEventListener( 'change', render ); // use if there is no animation loop
-				controls.minDistance = 2;
+				// controls.addEventListener( 'change', render ); // use if there is no animation loop
+				controls.minDistance = 10;
 				controls.maxDistance = 10;
 				controls.target.set( 0, 0, 0 );
 				controls.update();
 				
 				window.addEventListener( 'resize', onWindowResize, false );
-				//
 				window.addEventListener('mousemove', onMouseMove, false);
 				window.addEventListener('touchmove', onMouseMove, false);
-				//
 
 			}
 
@@ -132,9 +130,9 @@
 			let loop = function() {
 				requestAnimationFrame( loop );
 				dX = lerp(0.05, dX, mouse.x);
-				dY = lerp(0.05, dY, mouse.y);
-				mesh.rotation.x = -dY * 1;
-				mesh.rotation.y = dX * 1;
+				// dY = lerp(0.05, dY, mouse.y);
+				mesh.rotation.x = -dY * 0.5;
+				mesh.rotation.y = dX * 0.5;
         		render();
 			}
 
