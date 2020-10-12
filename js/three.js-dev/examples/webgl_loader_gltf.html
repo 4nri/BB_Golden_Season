@@ -51,7 +51,7 @@
 					.setDataType( THREE.UnsignedByteType )
 					.setPath( 'textures/equirectangular/' )
 					// royal_esplanade_1k.hdr
-					.load( 'test_hdr_06.hdr', function ( texture ) {
+					.load( 'test_hdr_07.hdr', function ( texture ) {
 
 						var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
 
@@ -68,14 +68,14 @@
 						var roughnessMipmapper = new RoughnessMipmapper( renderer );
 
 						var loader = new GLTFLoader().setPath( '../../../models/' );
-						loader.load( 'test_01.gltf', function ( gltf ) {
+						loader.load( 'ural_01.gltf', function ( gltf ) {
 
 							gltf.scene.traverse( function ( child ) {
 
 								if ( child.isMesh ) {
 
 									// TOFIX RoughnessMipmapper seems to be broken with WebGL 2.0
-									// roughnessMipmapper.generateMipmaps( child.material );
+									roughnessMipmapper.generateMipmaps( child.material );
 
 								}
 
@@ -96,7 +96,7 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.toneMapping = THREE.ACESFilmicToneMapping;
-				renderer.toneMappingExposure = 1;
+				renderer.toneMappingExposure = 2;
 				renderer.outputEncoding = THREE.sRGBEncoding;
 				container.appendChild( renderer.domElement );
 				var pmremGenerator = new THREE.PMREMGenerator( renderer );
