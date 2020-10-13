@@ -50,7 +50,6 @@
 				new RGBELoader()
 					.setDataType( THREE.UnsignedByteType )
 					.setPath( 'textures/equirectangular/' )
-					// royal_esplanade_1k.hdr
 					.load( 'test_hdr_07.hdr', function ( texture ) {
 
 						var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
