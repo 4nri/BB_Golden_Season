@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
@@ -10,15 +11,15 @@ html, body {
     width: 100vw;
     height: 100vh;
     /* background-color: #FF0025; */
-    background: linear-gradient(90deg, #FF0025 50%, #5C258C 50%)
+    background: linear-gradient(90deg, #FF0025 50%, #f8e800 50%)
 }
 
 .image {
     width: 960px;
     height: 540px;
     display: block;
-    background-size:cover;
+    background-size: cover;
     background-position-x: center;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     background-image: url("./images/ural_0001.png");
 }

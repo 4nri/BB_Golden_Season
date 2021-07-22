@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>three.js webgl - glTF loader</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link rel="stylesheet" href="../../../css/style.css">
-	</head>
 
-	<body>
-		<div class="container" id="CanvasFrame">
-		</div>
-		<script type="module">
+<head>
+	<title>three.js webgl - glTF loader</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="../../../css/style.css">
+</head>
 
-			import * as THREE from '../build/three.module.js';
+<body>
+	<div class="container" id="CanvasFrame">
+	</div>
+	<script type="module">
+
+		import * as THREE from '../build/three.module.js';
 
 			import { OrbitControls } from './jsm/controls/OrbitControls.js';
 			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
@@ -67,7 +68,7 @@
 						var roughnessMipmapper = new RoughnessMipmapper( renderer );
 
 						var loader = new GLTFLoader().setPath( '../../../models/' );
-						loader.load( 'ural_01.gltf', function ( gltf ) {
+						loader.load( 'rostov_01.gltf', function ( gltf ) {
 
 							gltf.scene.traverse( function ( child ) {
 
@@ -149,5 +150,6 @@
 
 		</script>
 
-	</body>
+</body>
+
 </html>
